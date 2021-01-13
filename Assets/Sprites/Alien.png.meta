@@ -1,61 +1,64 @@
 fileFormatVersion: 2
-guid: 9870796de087b7b478a2d156150d1215
+guid: b3e43e604bdbf7746892bcb16a38e4bd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6268980691519995335
-    second: playerPH_0
+      213: -2942823943379307754
+    second: AlienWalkDown0
   - first:
-      213: -437920253591990932
-    second: playerPH_1
+      213: -3620427700229666998
+    second: AlienWalkDown1
   - first:
-      213: -6713090615509293804
-    second: playerPH_2
+      213: -6064842696636490183
+    second: AlienWalkDown2
   - first:
-      213: 6024326724147174957
-    second: playerPH_3
+      213: 568312574599528830
+    second: AlienWalkRight0
   - first:
-      213: 7634996308820821747
-    second: playerPH_4
+      213: 5616865980521103154
+    second: AlienWalkRight1
   - first:
-      213: 2098454196499447879
-    second: playerPH_5
+      213: 1385746534647897815
+    second: AlienWalkRight2
   - first:
-      213: -5842812280431959353
-    second: playerPH_6
+      213: 8333473628666599317
+    second: AlienWalkUp0
   - first:
-      213: 6424705554625476789
-    second: playerPH_7
+      213: -975394636615239872
+    second: AlienWalkUp1
   - first:
-      213: 8861280029783942545
-    second: playerPH_8
+      213: 3984287553000486061
+    second: AlienWalkUp2
   - first:
-      213: 9004519860630688488
-    second: playerPH_9
+      213: 50713712200906357
+    second: AlienIdleDown0
   - first:
-      213: -5088743697090400870
-    second: playerPH_10
+      213: 2889786350598334979
+    second: AlienIdleDown1
   - first:
-      213: 790065101739956823
-    second: playerPH_11
+      213: -7231409721203779524
+    second: AlienIdleDown2
   - first:
-      213: -6173408949309144332
-    second: playerPH_12
+      213: 6262224847846906635
+    second: AlienIdleDown3
   - first:
-      213: -5128792870891592845
-    second: playerPH_13
+      213: 2810330045207823116
+    second: AlienIdleRight0
   - first:
-      213: 5267517479854314656
-    second: playerPH_14
+      213: -1110578057744408522
+    second: AlienIdleRight1
   - first:
-      213: -2586342839112899133
-    second: playerPH_15
+      213: 9015844012007861791
+    second: AlienIdleRight2
   - first:
-      213: -1691464983478297584
-    second: playerPH_16
+      213: 3617610833811027095
+    second: AlienIdleUp0
   - first:
-      213: 7401190487571700748
-    second: playerPH_17
+      213: 414379534132182895
+    second: AlienIdleUp1
+  - first:
+      213: -7980313207162279018
+    second: AlienIdleUp2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -99,7 +102,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -153,379 +156,400 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: playerPH_0
+      name: AlienWalkDown0
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
-        width: 32
-        height: 32
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7cdf4d579b4eff650800000000000000
-      internalID: 6268980691519995335
+      spriteID: 613bc5a173df827d0800000000000000
+      internalID: -2942823943379307754
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c6d43bc79d13ce9f0800000000000000
-      internalID: -437920253591990932
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_2
+      name: AlienWalkDown1
       rect:
         serializedVersion: 2
         x: 64
-        y: 160
-        width: 32
-        height: 32
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4156f8517af46d2a0800000000000000
-      internalID: -6713090615509293804
+      spriteID: a4783d04038a1cdc0800000000000000
+      internalID: -3620427700229666998
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_3
+      name: AlienWalkDown2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93e1c5843b955dba0800000000000000
+      internalID: -6064842696636490183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienWalkRight0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e71846a864d03e700800000000000000
+      internalID: 568312574599528830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienWalkRight1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23fbfef89dd13fd40800000000000000
+      internalID: 5616865980521103154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienWalkRight2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7de9a6a91292b3310800000000000000
+      internalID: 1385746534647897815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienWalkUp0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59712c5dc1276a370800000000000000
+      internalID: 8333473628666599317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienWalkUp1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0473ab0feb3b672f0800000000000000
+      internalID: -975394636615239872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienWalkUp2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da4ba977b680b4730800000000000000
+      internalID: 3984287553000486061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienIdleDown0
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2e5fa3cc35ba9350800000000000000
-      internalID: 6024326724147174957
+      spriteID: 576f9f04adb24b000800000000000000
+      internalID: 50713712200906357
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_4
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3f60fa0e0b4f4f960800000000000000
-      internalID: 7634996308820821747
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_5
+      name: AlienIdleDown1
       rect:
         serializedVersion: 2
         x: 64
         y: 128
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74007cf39f43f1d10800000000000000
-      internalID: 2098454196499447879
+      spriteID: 30aaf2800659a1820800000000000000
+      internalID: 2889786350598334979
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_6
+      name: AlienIdleDown2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 96
-        width: 32
-        height: 32
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c2209fff292aeea0800000000000000
-      internalID: -5842812280431959353
+      spriteID: c3897561c2fd4ab90800000000000000
+      internalID: -7231409721203779524
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_7
+      name: AlienIdleDown3
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
-        width: 32
-        height: 32
+        x: 192
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b83ee199a3292950800000000000000
-      internalID: 6424705554625476789
+      spriteID: b0b1a870254e7e650800000000000000
+      internalID: 6262224847846906635
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_8
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 96
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 195e88eec3799fa70800000000000000
-      internalID: 8861280029783942545
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_9
+      name: AlienIdleRight0
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e297d1fa1b76fc70800000000000000
-      internalID: 9004519860630688488
+      spriteID: c03483e494c400720800000000000000
+      internalID: 2810330045207823116
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_10
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a9d2bed91962169b0800000000000000
-      internalID: -5088743697090400870
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_11
+      name: AlienIdleRight1
       rect:
         serializedVersion: 2
         x: 64
         y: 64
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 75a94aa2600e6fa00800000000000000
-      internalID: 790065101739956823
+      spriteID: 6302dccf32f6690f0800000000000000
+      internalID: -1110578057744408522
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_12
+      name: AlienIdleRight2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 32
-        height: 32
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4f2063bc445a35aa0800000000000000
-      internalID: -6173408949309144332
+      spriteID: f1eaf066c56be1d70800000000000000
+      internalID: 9015844012007861791
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_13
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 37363f3be0ed2d8b0800000000000000
-      internalID: -5128792870891592845
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_14
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0a490ea4d3bf91940800000000000000
-      internalID: 5267517479854314656
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_15
+      name: AlienIdleUp0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c5ec4f04e67b1cd0800000000000000
-      internalID: -2586342839112899133
+      spriteID: 79439ece2e5543230800000000000000
+      internalID: 3617610833811027095
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPH_16
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 01c93cd2f85b688e0800000000000000
-      internalID: -1691464983478297584
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: playerPH_17
+      name: AlienIdleUp1
       rect:
         serializedVersion: 2
         x: 64
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c0c16b6098f46b660800000000000000
-      internalID: 7401190487571700748
+      spriteID: f6ff326adfb20c500800000000000000
+      internalID: 414379534132182895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AlienIdleUp2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69bebba6b6b304190800000000000000
+      internalID: -7980313207162279018
       vertices: []
       indices: 
       edges: []
