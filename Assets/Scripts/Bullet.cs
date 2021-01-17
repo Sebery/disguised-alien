@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour {
 
     private void Awake() {
         timeToDieCount = 0.0f;
-        velocity = new Vector2(0.0f, 0.0f);
+        velocity = Vector2.zero;
     }
 
     private void Start() {
@@ -39,4 +39,13 @@ public class Bullet : MonoBehaviour {
             bulletPool.ReturnPoolPrefab(this.gameObject);
         }
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision) {
+    //    if (collision.CompareTag("Enemy")) {
+    //        velocity.x = 0.0f;
+    //        velocity.y = 0.0f;
+    //        timeToDieCount = 0.0f;
+    //        bulletPool.ReturnPoolPrefab(this.gameObject);
+    //    }
+    //}
 }

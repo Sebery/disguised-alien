@@ -3,78 +3,89 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    [Header("Player Data")]
+    [Header("Components")]
     public Rigidbody2D rb;
     public Animator anim;
+    public Camera mainCamera;
+    private Vector2 mousePos;
+    [Header("Movement")]
     public float speed;
-    private Vector2 velocity;
-    [Header("Shoot Data")]
+    private Vector2 velocity = Vector2.zero;
+    [Header("Shooting")]
+    public Animator gunAnim;
+    public Transform GunReference;
     public Transform bulletSpawn;
-    public float delayPerShoot;
     public ObjectPoolingController bulletsPool;
-    private float delayPerShootCounter;
-    private bool isShooting;
-    private Object bullet;
-    private Vector2 lastPlayerSpeed;
-
-    private void Awake() {
-        isShooting = false;
-        delayPerShootCounter = 0.0f;
-        velocity = new Vector2(0.0f, 0.0f);
-        lastPlayerSpeed = new Vector2(0.0f, -1.0f);
-        bullet = Resources.Load("BasicGunBullet");
-    }
+    public float delayPerShoot;
+    private float gunAngle = 0.0f;
+    private Vector2 gunReferenceDir = Vector2.zero;
+    private float delayPerShootCounter = 0.0f;
+    private bool isShooting = false;
 
     private void Update() {
+        mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+        RotateGun();
         GetDataToMove();
         Shoot();
         ShootDelay();
     }
 
     private void FixedUpdate() {
-        rb.MovePosition(rb.position + (Vector2)Vector3.Normalize(velocity) * speed * Time.fixedDeltaTime);
+        if (velocity.magnitude > 1.0f) {
+            velocity.Normalize();
+        }
+
+        rb.MovePosition(rb.position + velocity * speed * Time.fixedDeltaTime);
     }
 
     private void GetDataToMove() {
         velocity.x = Input.GetAxisRaw("Horizontal");
         velocity.y = Input.GetAxisRaw("Vertical");
 
-        anim.SetFloat("horizontal", velocity.x);
-        anim.SetFloat("vertical", velocity.y);
-        anim.SetFloat("speed", Vector2.SqrMagnitude(velocity));
+        anim.SetBool("isMoving", velocity != Vector2.zero);
+    }
 
-        if (velocity != Vector2.zero) { 
-            anim.SetFloat("lastspeed", ((velocity.x != 0.0f) ? velocity.x : (velocity.y > 0.0f) ? 2.0f : 0.0f));
-            lastPlayerSpeed.x = velocity.x;
-            lastPlayerSpeed.y = velocity.y;
+    private void RotateGun() {
+        gunReferenceDir = mousePos - (Vector2)GunReference.position;
+        gunAngle = (Mathf.Atan2(gunReferenceDir.x, gunReferenceDir.y) * Mathf.Rad2Deg);
+        if (gunAngle >= 70.0f && gunAngle <= 110.0f)
+        {
+            gunAnim.SetBool("right", true);
+            GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle - 90.0f) * -1.0f);
         }
+        else {
+            gunAnim.SetBool("right", false);
+        }
+
+        if (gunAngle <= -70.0f && gunAngle >= -110.0f)
+        {
+            gunAnim.SetBool("left", true);
+            GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle + 90.0f) * -1.0f);
+        }
+        else {
+            gunAnim.SetBool("left", false);
+        }
+        
+        if(!(gunAngle >= 70.0f && gunAngle <= 110.0f) && !(gunAngle <= -70.0f && gunAngle >= -110.0f)) {
+            GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle + 180.0f) * -1.0f);
+        }
+
+        //TODO: Add gun idle animation and Make the code better        
+
     }
 
     private void Shoot() {
-        if (Input.GetKey(KeyCode.Space) && !isShooting) {
+        if (Input.GetMouseButton(0) && !isShooting && bulletsPool.HasObjectsToPool()) {
             isShooting = true;
 
-            if (bulletsPool.HasObjectsToPool()) {
-                GameObject newBullet = bulletsPool.GetPoolPrefab();
-                newBullet.transform.position = bulletSpawn.transform.position;
-                newBullet.transform.rotation = bulletSpawn.transform.localRotation;
-                Bullet bulletScript = newBullet.GetComponent<Bullet>();
-
-                if (velocity == Vector2.zero) {
-                    if (lastPlayerSpeed.x != 0.0 && lastPlayerSpeed.y != 0.0f) {
-                        bulletScript.velocity.x = lastPlayerSpeed.x;
-                    } else {
-                        bulletScript.velocity.x = lastPlayerSpeed.x;
-                        bulletScript.velocity.y = lastPlayerSpeed.y;
-                    }
-
-                } else {
-                    bulletScript.velocity = velocity;
-                }
-            }
- 
+            GameObject newBullet = bulletsPool.GetPoolPrefab();
+            newBullet.transform.position = bulletSpawn.transform.position;
+            newBullet.transform.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle - 90.0f) * -1.0f);
+            Bullet bulletScript = newBullet.GetComponent<Bullet>();
+            bulletScript.velocity = gunReferenceDir.normalized;
         }
-            
+
     }
 
     private void ShootDelay() {
