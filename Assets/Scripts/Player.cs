@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Player : MonoBehaviour {
     [Header("Components")]
@@ -21,6 +22,15 @@ public class Player : MonoBehaviour {
     private Vector2 gunReferenceDir = Vector2.zero;
     private float delayPerShootCounter = 0.0f;
     private bool isShooting = false;
+    [Header("Camera")]
+    public CinemachineVirtualCamera virtualCamera;
+    public float shakeIntensity;
+    private CinemachineBasicMultiChannelPerlin channelPerlin;
+
+
+    private void Start() {
+        channelPerlin = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+    }
 
     private void Update() {
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -29,6 +39,7 @@ public class Player : MonoBehaviour {
         GetDataToMove();
         Shoot();
         ShootDelay();
+        SetDirection();
     }
 
     private void FixedUpdate() {
@@ -49,35 +60,36 @@ public class Player : MonoBehaviour {
     private void RotateGun() {
         gunReferenceDir = mousePos - (Vector2)GunReference.position;
         gunAngle = (Mathf.Atan2(gunReferenceDir.x, gunReferenceDir.y) * Mathf.Rad2Deg);
-        if (gunAngle >= 70.0f && gunAngle <= 110.0f)
-        {
-            gunAnim.SetBool("right", true);
-            GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle - 90.0f) * -1.0f);
-        }
-        else {
-            gunAnim.SetBool("right", false);
+        GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle + 180.0f) * -1.0f);
+    }
+
+    private bool RotateMinMax(float min, float max, float angle) {
+        return (angle >= min && angle <= max);
+    }
+
+    private void SetDirection() {
+        float dir = 0.5f;
+
+        if (RotateMinMax(45.0f, 135.0f, gunAngle)) {
+            dir = 1.0f;
         }
 
-        if (gunAngle <= -70.0f && gunAngle >= -110.0f)
-        {
-            gunAnim.SetBool("left", true);
-            GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle + 90.0f) * -1.0f);
-        }
-        else {
-            gunAnim.SetBool("left", false);
-        }
-        
-        if(!(gunAngle >= 70.0f && gunAngle <= 110.0f) && !(gunAngle <= -70.0f && gunAngle >= -110.0f)) {
-            GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle + 180.0f) * -1.0f);
+        if (RotateMinMax(-135.0f, -45.0f, gunAngle)) {
+            dir = -1.0f;
         }
 
-        //TODO: Add gun idle animation and Make the code better        
+        if (RotateMinMax(-45.0f, 45.0f, gunAngle)) {
+            dir = -0.5f;
+        }
 
+        anim.SetFloat("direction", dir);
+        gunAnim.SetFloat("direction", dir);
     }
 
     private void Shoot() {
         if (Input.GetMouseButton(0) && !isShooting && bulletsPool.HasObjectsToPool()) {
             isShooting = true;
+            CameraShake();
 
             GameObject newBullet = bulletsPool.GetPoolPrefab();
             newBullet.transform.position = bulletSpawn.transform.position;
@@ -92,11 +104,19 @@ public class Player : MonoBehaviour {
         if (isShooting) {
             delayPerShootCounter += Time.deltaTime;
 
+            if (delayPerShootCounter >= (delayPerShoot / 2.0f)) {
+                channelPerlin.m_AmplitudeGain = 0.0f;
+            }
+
             if (delayPerShootCounter >= delayPerShoot) {
                 delayPerShootCounter = 0.0f;
                 isShooting = false;
             }
         }
+    }
+
+    private void CameraShake() {
+        channelPerlin.m_AmplitudeGain = shakeIntensity;
     }
 
 }
