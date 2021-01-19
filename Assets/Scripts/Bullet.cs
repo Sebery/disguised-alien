@@ -29,7 +29,13 @@ public class Bullet : MonoBehaviour {
         rb.velocity = (Vector2)Vector3.Normalize(velocity) * speed * Time.fixedDeltaTime;
     }
 
-    void Die() {
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Enemy") || collision.CompareTag("StaticBlock")) {
+            ResetBullet();
+        }
+    }
+
+    void Die()  {
         timeToDieCount += Time.deltaTime;
 
         if (timeToDieCount >= timeToDie) {
@@ -40,12 +46,10 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision) {
-    //    if (collision.CompareTag("Enemy")) {
-    //        velocity.x = 0.0f;
-    //        velocity.y = 0.0f;
-    //        timeToDieCount = 0.0f;
-    //        bulletPool.ReturnPoolPrefab(this.gameObject);
-    //    }
-    //}
+    private void ResetBullet() {
+        velocity.x = 0.0f;
+        velocity.y = 0.0f;
+        timeToDieCount = 0.0f;
+        bulletPool.ReturnPoolPrefab(this.gameObject);
+    }
 }

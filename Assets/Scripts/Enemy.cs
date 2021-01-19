@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+    [Header("Data")]
+    public int lives;
+    [Header("Components")]
     public Rigidbody2D rb;
     public Transform target;
-    public float speed;
     public SpriteRenderer sprite;
     public Animator anim;
+    [Header("Movement")]
+    public float speed;
     private Vector2 direction;
     private Vector2 velocity;
     private bool isColliding;
@@ -21,13 +25,6 @@ public class Enemy : MonoBehaviour {
         direction = target.position - transform.position;
         direction.Normalize();
         velocity = direction;
-
-        ////if (transform.position.y < target.transform.position.y) {
-        ////    sprite.sortingOrder = 5;
-        ////} else {
-        ////    sprite.sortingOrder = 1;
-        ////}
-
     }
 
     private void FixedUpdate() {
@@ -44,15 +41,21 @@ public class Enemy : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.collider.CompareTag("Player")) {
+        if (collision.collider.CompareTag("Player"))
             isColliding = true;
-        }
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.collider.CompareTag("Player")) {
+        if (collision.collider.CompareTag("Player"))
             isColliding = false;
-        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Bullet"))
+            --lives;
+
+        if (lives <= 0)
+            Destroy(this.gameObject);
     }
 
 }

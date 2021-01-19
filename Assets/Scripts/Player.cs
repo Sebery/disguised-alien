@@ -4,6 +4,8 @@ using UnityEngine;
 using Cinemachine;
 
 public class Player : MonoBehaviour {
+    [Header("Data")]
+    public int lives;
     [Header("Components")]
     public Rigidbody2D rb;
     public Animator anim;
@@ -117,6 +119,10 @@ public class Player : MonoBehaviour {
 
     private void CameraShake() {
         channelPerlin.m_AmplitudeGain = shakeIntensity;
+    }
+    public void Die() {
+        if (lives <= 0)
+            Destroy(this.gameObject);
     }
 
 }
