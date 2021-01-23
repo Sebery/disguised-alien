@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     public Animator anim;
     public Camera mainCamera;
     private Vector2 mousePos;
+    private GameController gameController;
     [Header("Movement")]
     public float speed;
     private Vector2 velocity = Vector2.zero;
@@ -31,25 +32,29 @@ public class Player : MonoBehaviour {
 
 
     private void Start() {
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         channelPerlin = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     private void Update() {
-        mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        if (!gameController.gameOver) {
+            mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-        RotateGun();
-        GetDataToMove();
-        Shoot();
-        ShootDelay();
-        SetDirection();
+            RotateGun();
+            GetDataToMove();
+            Shoot();
+            ShootDelay();
+            SetDirection();
+        }
+
     }
 
     private void FixedUpdate() {
-        if (velocity.magnitude > 1.0f) {
-            velocity.Normalize();
+        if (!gameController.gameOver) {
+            if (velocity.magnitude > 1.0f) velocity.Normalize();
+            rb.MovePosition(rb.position + velocity * speed * Time.fixedDeltaTime);
         }
 
-        rb.MovePosition(rb.position + velocity * speed * Time.fixedDeltaTime);
     }
 
     private void GetDataToMove() {
@@ -61,7 +66,7 @@ public class Player : MonoBehaviour {
 
     private void RotateGun() {
         gunReferenceDir = mousePos - (Vector2)GunReference.position;
-        gunAngle = (Mathf.Atan2(gunReferenceDir.x, gunReferenceDir.y) * Mathf.Rad2Deg);
+        gunAngle = Mathf.Atan2(gunReferenceDir.x, gunReferenceDir.y) * Mathf.Rad2Deg;
         GunReference.rotation = Quaternion.Euler(0.0f, 0.0f, (gunAngle + 180.0f) * -1.0f);
     }
 
@@ -120,9 +125,12 @@ public class Player : MonoBehaviour {
     private void CameraShake() {
         channelPerlin.m_AmplitudeGain = shakeIntensity;
     }
+
     public void Die() {
-        if (lives <= 0)
-            Destroy(this.gameObject);
+        if (lives <= 0 && !gameController.gameOver) { 
+            anim.SetBool("die", true);
+            gameController.gameOver = true;
+        }
     }
 
 }
