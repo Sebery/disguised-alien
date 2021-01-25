@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour {
     [Header("Data")]
@@ -130,6 +131,7 @@ public class Player : MonoBehaviour {
         if (lives <= 0 && !gameController.gameOver) { 
             anim.SetBool("die", true);
             gameController.gameOver = true;
+            GetComponent<SortingGroup>().sortingOrder = 1;
         }
     }
 
