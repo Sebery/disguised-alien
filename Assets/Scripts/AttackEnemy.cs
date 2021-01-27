@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackEnemy : MonoBehaviour {
-    [Header("Components")]
-    public Player playerScript;
+    private Player playerScript;
+
+    private void Start() {
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
 
     public void AttackPlayer() {
         --playerScript.lives;

@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour {
             velocity.x = 0.0f;
             velocity.y = 0.0f;
             timeToDieCount = 0.0f;
-            bulletPool.ReturnPoolPrefab(this.gameObject);
+            bulletPool.ReturnPoolPrefab(gameObject);
         }
     }
 
@@ -50,6 +50,6 @@ public class Bullet : MonoBehaviour {
         velocity.x = 0.0f;
         velocity.y = 0.0f;
         timeToDieCount = 0.0f;
-        bulletPool.ReturnPoolPrefab(this.gameObject);
+        bulletPool.ReturnPoolPrefab(gameObject);
     }
 }

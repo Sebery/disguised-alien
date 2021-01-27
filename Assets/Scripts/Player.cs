@@ -20,8 +20,8 @@ public class Player : MonoBehaviour {
     public Animator gunAnim;
     public Transform GunReference;
     public Transform bulletSpawn;
-    public ObjectPoolingController bulletsPool;
     public float delayPerShoot;
+    private ObjectPoolingController bulletsPool;
     private float gunAngle = 0.0f;
     private Vector2 gunReferenceDir = Vector2.zero;
     private float delayPerShootCounter = 0.0f;
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour {
     private void Start() {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         channelPerlin = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        bulletsPool = GameObject.Find("BulletsPool").GetComponent<ObjectPoolingController>();
     }
 
     private void Update() {
