@@ -70,6 +70,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lives: 10
   speed: 1.5
+  mainCollider: {fileID: 4099491302996439173}
+  triggerCollider: {fileID: 4099491302996439174}
+  timeToDisappear: 4
 --- !u!61 &4099491302996439173
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -7,18 +7,33 @@ public class Enemy : MonoBehaviour {
     private int lives;
     [SerializeField]
     private float speed;
+    [SerializeField]
+    private BoxCollider2D mainCollider;
+    [SerializeField]
+    private BoxCollider2D triggerCollider;
+    [SerializeField]
+    private float timeToDisappear;
 
-    private int totalLives;
     private Rigidbody2D rb;
     private Transform target;
     private Animator anim;
+    private SpriteRenderer sprite;
     private GameController gameController;
     private ObjectPoolingController enemiesPool;
+
     private Vector2 direction = Vector2.zero;
     private Vector2 velocity = Vector2.zero;
+    private int totalLives;
+    private int startLayer;
     private bool followTarget = true;
 
+    private void OnEnable() {
+        Reset();
+    }
+
     private void Start() {
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        startLayer = sprite.sortingOrder;
         totalLives = lives;
         rb = GetComponent<Rigidbody2D>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -59,18 +74,38 @@ public class Enemy : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Bullet"))
+        if (collision.CompareTag("Bullet")) {
             --lives;
 
-        if (lives <= 0) {
-            Reset();
-            enemiesPool.ReturnPoolPrefab(gameObject);
+            if (lives <= 0)
+                Die();
         }
     }
 
-    private void Reset() {
-        lives = totalLives;
-        followTarget = true;
+    private void Die() {
+        followTarget = false;
+        anim.SetBool("die", true);
+        mainCollider.enabled = false;
+        triggerCollider.enabled = false;
+        sprite.sortingOrder = -1;
+
+        Invoke(nameof(ReturnToPool), timeToDisappear);
     }
+
+    private void Reset() {
+        if (anim) {
+            followTarget = true;
+            anim.SetBool("die", false);
+            mainCollider.enabled = true;
+            triggerCollider.enabled = true;
+            sprite.sortingOrder = startLayer;
+            lives = totalLives;
+        }
+    }
+
+    private void ReturnToPool() {
+        enemiesPool.ReturnPoolPrefab(gameObject);
+    }
+
 
 }
