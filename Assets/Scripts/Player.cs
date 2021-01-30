@@ -129,7 +129,8 @@ public class Player : MonoBehaviour {
     }
 
     public void Die() {
-        if (lives <= 0 && !gameController.gameOver) { 
+        if (lives <= 0 && !gameController.gameOver) {
+            rb.simulated = false;
             anim.SetBool("die", true);
             gameController.gameOver = true;
             GetComponent<SortingGroup>().sortingOrder = 1;

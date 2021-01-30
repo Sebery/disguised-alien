@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour {
     private SpriteRenderer sprite;
     private GameController gameController;
     private ObjectPoolingController enemiesPool;
+    private Enemy enemyScript;
 
     private Vector2 direction = Vector2.zero;
     private Vector2 velocity = Vector2.zero;
@@ -32,6 +33,7 @@ public class Enemy : MonoBehaviour {
     }
 
     private void Start() {
+        enemyScript = GetComponent<Enemy>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         startLayer = sprite.sortingOrder;
         totalLives = lives;
@@ -43,12 +45,17 @@ public class Enemy : MonoBehaviour {
     }
 
     private void Update() {
-        direction = target.position - transform.position;
-        direction.Normalize();
-        velocity = direction;
+        if (!gameController.gameOver) {
+            direction = target.position - transform.position;
+            direction.Normalize();
+            velocity = direction;
+        }
 
-        if (gameController.gameOver)
-            GetComponent<Enemy>().enabled = false;
+        if (gameController.gameOver && enemyScript.enabled) {
+            rb.simulated = false;
+            anim.SetBool("finished", true);
+            enemyScript.enabled = false;
+        }
     }
 
     private void FixedUpdate() {
@@ -73,16 +80,8 @@ public class Enemy : MonoBehaviour {
             followTarget = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Bullet")) {
-            --lives;
-
-            if (lives <= 0)
-                Die();
-        }
-    }
-
     private void Die() {
+        rb.simulated = false;
         followTarget = false;
         anim.SetBool("die", true);
         mainCollider.enabled = false;
@@ -94,6 +93,7 @@ public class Enemy : MonoBehaviour {
 
     private void Reset() {
         if (anim) {
+            rb.simulated = true;
             followTarget = true;
             anim.SetBool("die", false);
             mainCollider.enabled = true;
@@ -105,6 +105,18 @@ public class Enemy : MonoBehaviour {
 
     private void ReturnToPool() {
         enemiesPool.ReturnPoolPrefab(gameObject);
+    }
+
+    //Getters and Setters
+    public void SetLives(int lives) {
+        this.lives = lives;
+
+        if (this.lives <= 0)
+            Die();
+    }
+
+    public int GetLives() {
+        return lives;
     }
 
 
