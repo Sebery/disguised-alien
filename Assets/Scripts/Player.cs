@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     public Camera mainCamera;
     private Vector2 mousePos;
     private GameController gameController;
+    private Door door;
     [Header("Movement")]
     public float speed;
     private Vector2 velocity = Vector2.zero;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour {
 
 
     private void Start() {
+        door = GameObject.FindGameObjectWithTag("Door").GetComponent<Door>();
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         channelPerlin = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         bulletsPool = GameObject.Find("BulletsPool").GetComponent<ObjectPoolingController>();
@@ -59,6 +61,10 @@ public class Player : MonoBehaviour {
 
     }
 
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (collision.collider.CompareTag("Door") && Input.GetMouseButtonDown(1) && gameController.GetMissionCompleted())
+            door.OpenDoor();
+    }
     private void GetDataToMove() {
         velocity.x = Input.GetAxisRaw("Horizontal");
         velocity.y = Input.GetAxisRaw("Vertical");

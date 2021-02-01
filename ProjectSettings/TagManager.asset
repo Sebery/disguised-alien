@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - Bullet
   - StaticBlock
+  - Sargent
+  - Door
+  - Scape
   layers:
   - Default
   - TransparentFX

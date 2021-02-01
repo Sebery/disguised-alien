@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 
     private ObjectPoolingController enemiesPool;
     public bool gameOver = false;
+    private bool missionCompleted = false;
 
     private void Start() {
         enemiesPool = GameObject.Find("EnemiesPool").GetComponent<ObjectPoolingController>();
@@ -44,7 +45,8 @@ public class GameController : MonoBehaviour {
         }
 
         for (int i = 0; i < random.Length; ++i) {
-            Instantiate(general, generalSpawns[random[i]].transform.position, generalSpawns[random[i]].transform.rotation);
+            GameObject obj = Instantiate(general, generalSpawns[random[i]].transform.position, Quaternion.identity);            
+            obj.GetComponent<Animator>().SetFloat("direction", generalSpawns[random[i]].transform.localScale.x);
         }
     }
 
@@ -56,5 +58,14 @@ public class GameController : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    //Getters and Setters
+    public bool GetMissionCompleted() => missionCompleted;
+    public void SetMissionCompleted(bool missionCompleted) { 
+        this.missionCompleted = missionCompleted;
+
+        if (missionCompleted)
+            Debug.Log("Mission Completed!");
     }
 }

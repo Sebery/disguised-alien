@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     private float timeToDisappear;
 
+    private Transform scapeTarget;
+    private bool scape = false;
+
     private Rigidbody2D rb;
     private Transform target;
     private Animator anim;
@@ -33,6 +36,7 @@ public class Enemy : MonoBehaviour {
     }
 
     private void Start() {
+        scapeTarget = GameObject.FindGameObjectWithTag("Scape").transform;
         enemyScript = GetComponent<Enemy>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         startLayer = sprite.sortingOrder;
@@ -46,6 +50,11 @@ public class Enemy : MonoBehaviour {
 
     private void Update() {
         if (!gameController.gameOver) {
+            if (!scape && gameController.GetMissionCompleted()) {
+                scape = true;
+                target = scapeTarget;
+            }
+
             direction = target.position - transform.position;
             direction.Normalize();
             velocity = direction;
