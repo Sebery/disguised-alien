@@ -7,6 +7,7 @@ public class BulletController : MonoBehaviour {
     [SerializeField] private float speed;
     [SerializeField] private Timer resetTimer;
 
+    [SerializeField]  private Manager manager;
     private Rigidbody2D rb;
     private Vector2 dir = Vector2.zero;
     private bool firstTimeEnabled = false;
@@ -14,9 +15,16 @@ public class BulletController : MonoBehaviour {
     private Vector2 mousePos;
 
     private void OnEnable() {
+        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+
         //Set direction to move
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        dir = (mousePos - (Vector2)transform.position).normalized;
+        if (!manager.Mobile) {
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            dir = (mousePos - (Vector2)transform.position).normalized;
+        } else {
+            dir = manager.ShootJoystick.Direction.normalized;
+        }
+        
 
         //Start timer since second time the object is enabled
         if (firstTimeEnabled)
@@ -35,10 +43,10 @@ public class BulletController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        MovePlayer();
+        rb.velocity = dir * Time.deltaTime * speed;
 
-        if (resetTimer.GetIsTimeCompleted())
-            Reset();
+        if (resetTimer.IsTimeCompleted)
+            ResetBullet();
     }
 
     private void Init() {
@@ -46,12 +54,8 @@ public class BulletController : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void MovePlayer() {
-        rb.velocity = dir * Time.deltaTime * speed;
-    }
-
-    private void Reset() {
-        resetTimer.SetIsTimeCompleted(false);
+    private void ResetBullet() {
+        resetTimer.IsTimeCompleted = false;
         bulletPool.ReturnPoolPrefab(gameObject);
     }
 

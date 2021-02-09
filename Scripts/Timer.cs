@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour {
     [SerializeField] private float delay;
+
     private float counter = 0.0f;
     private bool isTimeCompleted = false;
     private bool timing = false;
+
+    public bool IsTimeCompleted { get => isTimeCompleted; set => isTimeCompleted = value; }
 
     private void Update() {
         if (timing)
@@ -27,11 +30,5 @@ public class Timer : MonoBehaviour {
         counter = 0.0f;
         isTimeCompleted = false;
     }
-
-    //Getters and Setters
-    public bool GetIsTimeCompleted() => isTimeCompleted;
-    public void SetIsTimeCompleted(bool isTimeCompleted) { this.isTimeCompleted = isTimeCompleted; }
-
-
 
 }
