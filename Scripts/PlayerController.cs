@@ -3,85 +3,72 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerController : MonoBehaviour {
     [SerializeField] private float speed;
-    [SerializeField] private GunController gunController;
-    [SerializeField] private Timer shootTimer;
-    [SerializeField] private ObjectPooler bulletPool;
-    [SerializeField] private Transform bulletSpawn;
-    [SerializeField] private Transform gunsRef;
-    
-    private Manager manager;
-    private Vector2 dir;
-    private Rigidbody2D rb;
-    private Animator anim;
-    private SpriteRenderer sprite;
-    private Vector2 animDir = new Vector2(0.0f, -1.0f);
-    //Delay to the first time to shoot
-    private bool firstShoot = true;
+    [SerializeField] private int lives;
 
-    public int CurrentSortingOrder { get => sprite.sortingOrder; }
-    public Vector2 AnimDirection { get => animDir; }
+    //Animation Parameters
+    private const string LASTDIRX = "LastDirX";
+    private const string LASTDIRY = "LastDirY";
+    private const string DIRX = "DirX";
+    private const string DIRY = "DirY";
+    private const string ISMOVING = "IsMoving";
+    private const string DIE = "Die";
+
+    private float lastDirX;
+    private float lastDirY;
+    private Manager manager;
+    private GameController gameController;
+    private Rigidbody2D _rigidbody2D;
+    private Animator _animator;
+    private Vector2 direction = Vector2.zero;
 
     private void Start() {
-        Init();
+        lastDirX = 1.0f;
+        lastDirY = 0.0f;
+        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update() {
-        CalcMoveDirection();
-        CalcAnimDirection();
-
-        Shoot();
+        SelectDirection();
+        SelectAnimation();
+        Die();
     }
 
     private void FixedUpdate() {
-        rb.velocity = speed * Time.deltaTime * dir;
+        _rigidbody2D.velocity = speed * Time.deltaTime * direction;
     }
 
-    private void CalcMoveDirection() {
-        dir.x = manager.Mobile ? manager.MoveJoystick.Horizontal : Input.GetAxis("Horizontal");
-        dir.y = manager.Mobile ? manager.MoveJoystick.Vertical : Input.GetAxis("Vertical");
-
-        dir = (dir.sqrMagnitude > 1.0f) ? dir.normalized : dir;
-        anim.SetBool("isMoving", dir != Vector2.zero);
-    }
-
-    private void Init() {
-        //To be able to shoot the first time
-        shootTimer.IsTimeCompleted = true;
-
-        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        sprite = GetComponent<SpriteRenderer>();
-    }
-
-    private void CalcAnimDirection() {
-        animDir = gunController.Direction.normalized;
-        anim.SetFloat("dirX", animDir.x);
-        anim.SetFloat("dirY", animDir.y);
-    }
-
-    private void Shoot() {
-        if (!manager.Mobile && Input.GetMouseButton(0) ||
-            manager.Mobile && manager.ShootJoystick.Horizontal != 0.0f||
-            manager.Mobile && manager.ShootJoystick.Vertical != 0.0f) {
-
-            if (!shootTimer.IsTimeCompleted) return;
-
-            shootTimer.StartTimer();
-            if (bulletPool.HasObjectsToPool() && !firstShoot) {
-                GameObject bullet = bulletPool.GetPoolPrefab();
-                bullet.transform.rotation = gunsRef.transform.localRotation;
-                bullet.transform.position = bulletSpawn.transform.position;
-            }
-
-            firstShoot = false;
+    private void SelectDirection() {
+        if (!manager.Mobile) {
+            direction.x = Input.GetAxisRaw("Horizontal");
+            direction.y = Input.GetAxisRaw("Vertical");
+            direction.Normalize();
         } else {
-            firstShoot = true;
+            direction.x = gameController.MoveJoystick.Horizontal;
+            direction.y = gameController.MoveJoystick.Vertical;
         }
     }
 
+    private void SelectAnimation() {
+        if (direction == Vector2.zero) {
+            _animator.SetFloat(LASTDIRX, lastDirX);
+            _animator.SetFloat(LASTDIRY, lastDirY);
+            _animator.SetBool(ISMOVING, false);
+        } else {
+            lastDirX = direction.x;
+            lastDirY = direction.y;
+            _animator.SetFloat(DIRX, direction.x);
+            _animator.SetFloat(DIRY, direction.y);
+            _animator.SetBool(ISMOVING, true);
+        }
+    }
+
+    private void Die() {
+        if (lives <= 0)
+            _animator.SetBool(DIE, true);
+    }
 }
