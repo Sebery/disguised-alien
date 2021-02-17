@@ -19,11 +19,13 @@ public class GunController : MonoBehaviour {
 
     private void Update() {
         if (!manager.Mobile) {
-            direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+            direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
         } else {
             if (gameController.ShootJoystick.Direction != Vector2.zero)
                 direction = gameController.ShootJoystick.Direction;
         }
+
+        direction.Normalize();
 
         ChangeSortingLayer();
         SetAngle();

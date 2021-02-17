@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float speed;
     [SerializeField] private int lives;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Transform bulletSpawn;
+    [SerializeField] private float shootDelay;
+    [SerializeField] private Transform gunReference;
 
     //Animation Parameters
     private const string DIR_X = "DirX";
@@ -15,6 +18,7 @@ public class PlayerController : MonoBehaviour {
     private const string IS_MOVING = "IsMoving";
     private const string DIE = "Die";
 
+    private ObjectPooler bulletPool;
     private Manager manager;
     private GameController gameController;
     private Rigidbody2D _rigidbody2D;
@@ -23,12 +27,15 @@ public class PlayerController : MonoBehaviour {
     private Vector2 animDirection;
     private bool isMovingUp = false;
     private int currentGun = 0;
+    private bool canShoot = true;
+    private bool firstShoot = true;
 
     public int SortingOrder { get => _spriteRenderer.sortingOrder; }
     public int CurrentGun { get => currentGun; }
     public bool IsMovingUp { get => isMovingUp; }
 
     private void Start() {
+        bulletPool = GameObject.FindGameObjectWithTag("BulletPool").GetComponent<ObjectPooler>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -42,6 +49,7 @@ public class PlayerController : MonoBehaviour {
     private void Update() {
         SelectDirection();
         SelectAnimation();
+        Shoot();
         Die();
     }
 
@@ -76,6 +84,31 @@ public class PlayerController : MonoBehaviour {
     private void Die() {
         if (lives <= 0)
             _animator.SetBool(DIE, true);
+    }
+
+    private void Shoot() {
+        if (manager.Mobile && gameController.ShootJoystick.Direction == Vector2.zero)
+            firstShoot = true;
+
+        if (!canShoot || !bulletPool.HasObjectsToPool())
+            return;
+
+        if (!manager.Mobile && Input.GetMouseButton(0) || gameController.ShootJoystick.Direction != Vector2.zero) {
+            canShoot = false;
+            Invoke(nameof(ActivateShoot), shootDelay);
+            if (manager.Mobile && firstShoot) {
+                firstShoot = false;
+                return;
+            }
+
+            GameObject bullet = bulletPool.GetPoolPrefab();
+            bullet.transform.position = bulletSpawn.transform.position;
+            bullet.transform.rotation = gunReference.transform.localRotation;
+        }
+    }
+
+    private void ActivateShoot() {
+        canShoot = true;
     }
 
 
