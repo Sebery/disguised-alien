@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float shootDelay;
     [SerializeField] private Transform gunReference;
 
-    //Animation Parameters
+    //Animator Parameters
     private const string DIR_X = "DirX";
     private const string DIR_Y = "DirY";
     private const string IS_MOVING = "IsMoving";

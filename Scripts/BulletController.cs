@@ -58,4 +58,9 @@ public class BulletController : MonoBehaviour {
         direction.Normalize();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Wall") || collision.CompareTag("Enemy"))
+            DestroyBullet();
+    }
+
 }
