@@ -18,6 +18,8 @@ public class GunController : MonoBehaviour {
     }
 
     private void Update() {
+        if (playerController.Die) return;
+
         if (!manager.Mobile) {
             direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
         } else {

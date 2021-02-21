@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SortingGroup))]
 public class PlayerController : MonoBehaviour {
     [SerializeField] private float speed;
     [SerializeField] private int lives;
@@ -12,12 +13,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float shootDelay;
     [SerializeField] private Transform gunReference;
 
-    //Animator Parameters
-    private const string DIR_X = "DirX";
-    private const string DIR_Y = "DirY";
-    private const string IS_MOVING = "IsMoving";
-    private const string DIE = "Die";
-
+    private SortingGroup _sortingGroup;
     private ObjectPooler bulletPool;
     private Manager manager;
     private GameController gameController;
@@ -29,12 +25,22 @@ public class PlayerController : MonoBehaviour {
     private int currentGun = 0;
     private bool canShoot = true;
     private bool firstShoot = true;
+    private bool die = false;
+
+    //Animator Parameters
+    private const string DIR_X = "DirX";
+    private const string DIR_Y = "DirY";
+    private const string IS_MOVING = "IsMoving";
+    private const string DIE = "Die";
 
     public int SortingOrder { get => _spriteRenderer.sortingOrder; }
     public int CurrentGun { get => currentGun; }
     public bool IsMovingUp { get => isMovingUp; }
+    public int Lives { get => lives; set => lives = value; }
+    public bool Die { get => die; }
 
     private void Start() {
+        _sortingGroup = GetComponent<SortingGroup>();
         bulletPool = GameObject.FindGameObjectWithTag("BulletPool").GetComponent<ObjectPooler>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -47,13 +53,17 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
+        if (die) return;
+
         SelectDirection();
         SelectAnimation();
         Shoot();
-        Die();
+        PlayerDie();
     }
 
     private void FixedUpdate() {
+        if (die) return;
+
         _rigidbody2D.velocity = speed * Time.deltaTime * moveDirection;
     }
 
@@ -81,9 +91,14 @@ public class PlayerController : MonoBehaviour {
         isMovingUp = (animDirection.y > 0.866f); 
     }
 
-    private void Die() {
-        if (lives <= 0)
+    private void PlayerDie() {
+        if (lives <= 0) { 
             _animator.SetBool(DIE, true);
+            _sortingGroup.sortingLayerName = "Die";
+            die = true;
+            _rigidbody2D.velocity = Vector2.zero;
+            gameController.GameOver = true;
+        }
     }
 
     private void Shoot() {

@@ -8,6 +8,9 @@ public class GameController : MonoBehaviour {
     [SerializeField] private Joystick shootJoystick;
 
     private Manager manager;
+    private bool gameOver = false;
+
+    public bool GameOver { get => gameOver; set => gameOver = value; }
 
     public Joystick MoveJoystick { get => moveJoystick; }
     public Joystick ShootJoystick { get => shootJoystick; }
