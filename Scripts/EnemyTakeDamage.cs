@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyTakeDamage : MonoBehaviour {
     private EnemyController enemyController;
     private BoxCollider2D _boxCollider2D;
+    private PlayerController playerController;
 
     private void OnEnable() {
         if (!_boxCollider2D) return;
@@ -14,6 +15,7 @@ public class EnemyTakeDamage : MonoBehaviour {
     }
 
     private void Start() {
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         enemyController = GetComponentInParent<EnemyController>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
     }
@@ -25,6 +27,6 @@ public class EnemyTakeDamage : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Bullet"))
-            enemyController.Lives -= 1;
+            enemyController.Lives -= playerController.Damage;
     }
 }

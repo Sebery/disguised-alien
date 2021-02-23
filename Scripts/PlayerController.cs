@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     private bool canShoot = true;
     private bool firstShoot = true;
     private bool die = false;
+    private int damage;
 
     //Animator Parameters
     private const string DIR_X = "DirX";
@@ -38,8 +39,10 @@ public class PlayerController : MonoBehaviour {
     public bool IsMovingUp { get => isMovingUp; }
     public int Lives { get => lives; set => lives = value; }
     public bool Die { get => die; }
+    public int Damage { get => damage; }
 
     private void Start() {
+        SelectDamage();
         _sortingGroup = GetComponent<SortingGroup>();
         bulletPool = GameObject.FindGameObjectWithTag("BulletPool").GetComponent<ObjectPooler>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
@@ -124,6 +127,17 @@ public class PlayerController : MonoBehaviour {
 
     private void ActivateShoot() {
         canShoot = true;
+    }
+
+    private void SelectDamage() {
+        switch (currentGun) {
+            case 0: //Basic Gun
+                damage = 1;
+                break;
+            case 1: //Demon Gun
+                damage = 3;
+                break;
+        }
     }
 
 
