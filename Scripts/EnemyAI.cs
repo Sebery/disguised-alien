@@ -11,13 +11,14 @@ public class EnemyAI : MonoBehaviour {
     [SerializeField] private Timer updatePathTimer;
 
     private EnemyController enemyController;
+    private GameController gameController;
     private NavMeshAgent agent;
     private Transform target;
     private Vector2 direction;
     private bool stop = false;
 
     public Vector2 Direction { get => direction; }
-    public bool Stop { set => stop = value; }
+    public bool Stop { get => stop; set => stop = value; }
 
     private void OnEnable() {
         if (!agent) return;
@@ -27,6 +28,7 @@ public class EnemyAI : MonoBehaviour {
 
     private void Start() {
         enemyController = GetComponent<EnemyController>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         target = GameObject.FindGameObjectWithTag(targetTag).transform;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
@@ -36,29 +38,28 @@ public class EnemyAI : MonoBehaviour {
     }
 
     private void Update() {
-        if (enemyController.Die) return;
+        if (enemyController.Die) {
+            agent.speed = 0.0f;
+            updatePathTimer.CancelTimer();
+            return;
+        }
 
-        if (!stop)
-            direction = agent.velocity.normalized;
+        if (stop || gameController.AttackingPlayer) {
+            if (agent.destination != transform.position)
+                agent.SetDestination(transform.position);
+
+            return;
+        }
+
+        direction = agent.velocity.normalized;
 
         if (updatePathTimer.TimeCompleted)
             UpdatePath();
     }
 
     private void UpdatePath() {
-        if (enemyController.Die) {
-            agent.stoppingDistance = 100.0f;
-            agent.speed = 0.0f;
-            updatePathTimer.CancelTimer();
-            return;
-        }
-
-        if (stop) {
-            agent.SetDestination(transform.position);
-            return;
-        }
-
-        agent.SetDestination(target.position);
+        if (agent.destination != target.position)
+            agent.SetDestination(target.position);
     }
 
 }

@@ -11,12 +11,14 @@ public class GameController : MonoBehaviour {
     private bool missionCompleted = false;
     private Manager manager;
     private bool gameOver = false;
+    private bool attackingPlayer = false;
 
     public int MissionIndex { get => missionIndex; }
     public bool GameOver { get => gameOver; set => gameOver = value; }
     public Joystick MoveJoystick { get => moveJoystick; }
     public Joystick ShootJoystick { get => shootJoystick; }
     public bool MissionCompleted { get => missionCompleted; set => missionCompleted = value; }
+    public bool AttackingPlayer { get => attackingPlayer; set => attackingPlayer = value; }
 
     private void Start() {
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();

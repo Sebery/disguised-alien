@@ -28,6 +28,7 @@ public class BulletController : MonoBehaviour {
 
         Invoke(nameof(DestroyBullet), timeToDestroy);
         SetDirection();
+        _spriteRenderer.sprite = bullets[playerController.CurrentGun];
     }
 
     private void Init() {

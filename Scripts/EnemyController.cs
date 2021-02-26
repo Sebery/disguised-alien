@@ -22,13 +22,15 @@ public class EnemyController : MonoBehaviour {
     private int totalLives;
     private float totalSpeed;
     private NavMeshAgent agent;
+    private bool attacking = false;
 
     //Animator Parameters
     private const string DIR_X = "DirX";
     private const string DIR_Y = "DirY";
     private const string DIE = "die";
     private const string ATTACK = "attack";
-    private const string GAMEOVER = "gameover";
+    private const string PLAYER_DIED = "playerDied";
+    private const string IDLE = "idle";
 
     public bool Die { get => die; }
     public int Lives { get => lives; set => lives = value; }
@@ -55,7 +57,7 @@ public class EnemyController : MonoBehaviour {
     private void Update() {
         if (gameController.GameOver) {
             attackTimer.CancelTimer();
-            _animator.SetBool(GAMEOVER, true);
+            _animator.SetBool(PLAYER_DIED, true);
             return;
         }
 
@@ -64,31 +66,39 @@ public class EnemyController : MonoBehaviour {
             enemiesPool.ReturnPoolPrefab(gameObject);
         }
 
-        if (!die && lives <= 0)
+        if (!die && lives <= 0 || gameController.MissionCompleted)
             EnemyDie();
 
         if (die) return;
 
-        _animator.SetFloat(DIR_X, enemyAI.Direction.x);
-        _animator.SetFloat(DIR_Y, enemyAI.Direction.y);
+        if (enemyAI.Direction != Vector2.zero && !enemyAI.Stop) { 
+            _animator.SetFloat(DIR_X, enemyAI.Direction.x);
+            _animator.SetFloat(DIR_Y, enemyAI.Direction.y);
+        }
 
         if (attackTimer.TimeCompleted)
             playerController.Lives -= damage;
+
+        _animator.SetBool(IDLE, !attacking && gameController.AttackingPlayer);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Player")) {
+        if (collision.CompareTag("Player") && !gameController.AttackingPlayer) {
             attackTimer.StartTimer();
             _animator.SetBool(ATTACK, true);
             enemyAI.Stop = true;
+            attacking = true;
+            gameController.AttackingPlayer = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        if (collision.CompareTag("Player")) {
+        if (collision.CompareTag("Player") && attacking) {
             attackTimer.CancelTimer();
             _animator.SetBool(ATTACK, false);
             enemyAI.Stop = false;
+            attacking = false;
+            gameController.AttackingPlayer = false;
         }
     }
 

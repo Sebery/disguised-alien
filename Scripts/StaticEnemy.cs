@@ -12,6 +12,7 @@ public class StaticEnemy : MonoBehaviour {
     private Animator _animator;
     private GameController gameController;
     private Mission01 mission01;
+    private bool die = false;
 
     private void Start() {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -24,7 +25,7 @@ public class StaticEnemy : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Bullet")) {
+        if (collision.CompareTag("Bullet") && !die) {
             lives -= playerController.Damage;
             if (lives <= 0)
                 Die();
@@ -32,6 +33,7 @@ public class StaticEnemy : MonoBehaviour {
     }
 
     private void Die() {
+        die = true;
         _animator.SetBool(DIE, true);
 
         if (gameController.MissionIndex == 0) {

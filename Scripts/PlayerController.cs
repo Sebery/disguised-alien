@@ -12,7 +12,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform bulletSpawn;
     [SerializeField] private float shootDelay;
     [SerializeField] private Transform gunReference;
+    [SerializeField] private Animator[] heartAnims;
+    [SerializeField] private float colorDelay;
 
+    private int currentHearts = 3;
+    private int heartValue = 0;
     private SortingGroup _sortingGroup;
     private ObjectPooler bulletPool;
     private Manager manager;
@@ -26,23 +30,44 @@ public class PlayerController : MonoBehaviour {
     private bool canShoot = true;
     private bool firstShoot = true;
     private bool die = false;
-    private int damage;
+    private int damage = 1;
+    private Color damageColor = new Color(255, 0, 0, 50);
+    private Color normalColor = new Color(255, 255, 255, 255);
 
     //Animator Parameters
     private const string DIR_X = "DirX";
     private const string DIR_Y = "DirY";
     private const string IS_MOVING = "IsMoving";
     private const string DIE = "Die";
-
+    private const string HEART_STATE = "state";
+   
     public int SortingOrder { get => _spriteRenderer.sortingOrder; }
-    public int CurrentGun { get => currentGun; }
+    public int CurrentGun { get => currentGun; set => currentGun = value; }
     public bool IsMovingUp { get => isMovingUp; }
-    public int Lives { get => lives; set => lives = value; }
+    public int Damage { get => damage; set => damage = value; }
+
+    public int Lives { 
+        get => lives;
+
+        set {
+            lives = value;
+            //To remove lives
+            if (lives <= 0)
+                heartAnims[2].SetInteger(HEART_STATE, -1);
+            else if (lives <= heartValue)
+                heartAnims[1].SetInteger(HEART_STATE, -1);
+            else if (lives <= heartValue * 2)
+                heartAnims[0].SetInteger(HEART_STATE, -1);
+
+            _spriteRenderer.color = damageColor;
+            Invoke(nameof(ResetColor), colorDelay);
+        } 
+    }
     public bool Die { get => die; }
-    public int Damage { get => damage; }
 
     private void Start() {
-        SelectDamage();
+        //lives should be divisible by 3
+        heartValue = lives / currentHearts;
         _sortingGroup = GetComponent<SortingGroup>();
         bulletPool = GameObject.FindGameObjectWithTag("BulletPool").GetComponent<ObjectPooler>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
@@ -129,15 +154,8 @@ public class PlayerController : MonoBehaviour {
         canShoot = true;
     }
 
-    private void SelectDamage() {
-        switch (currentGun) {
-            case 0: //Basic Gun
-                damage = 1;
-                break;
-            case 1: //Demon Gun
-                damage = 3;
-                break;
-        }
+    private void ResetColor() {
+        _spriteRenderer.color = normalColor;
     }
 
 

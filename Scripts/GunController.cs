@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour {
-    [SerializeField] private SpriteRenderer[] guns;
+    [SerializeField] private GunData[] gunsData;
 
     private Manager manager;
     private GameController gameController;
@@ -40,9 +40,23 @@ public class GunController : MonoBehaviour {
 
     private void ChangeSortingLayer() {
         if (playerController.IsMovingUp)
-            guns[playerController.CurrentGun].sortingOrder = playerController.SortingOrder - 1;
+            gunsData[playerController.CurrentGun].Sprite.sortingOrder = playerController.SortingOrder - 1;
         else
-            guns[playerController.CurrentGun].sortingOrder = playerController.SortingOrder + 1;
+            gunsData[playerController.CurrentGun].Sprite.sortingOrder = playerController.SortingOrder + 1;
+    }
+
+    public void SelectGun() {
+        gunsData[playerController.CurrentGun].IsActive = false;
+        gunsData[playerController.CurrentGun].ActiveObject = false;
+
+        do {
+            ++playerController.CurrentGun;
+            playerController.CurrentGun = playerController.CurrentGun >= gunsData.Length ? 0 : playerController.CurrentGun;
+        } while (!gunsData[playerController.CurrentGun].Selectable);
+
+        gunsData[playerController.CurrentGun].IsActive = true;
+        gunsData[playerController.CurrentGun].ActiveObject = true;
+        playerController.Damage = gunsData[playerController.CurrentGun].Damage;
     }
 
 
