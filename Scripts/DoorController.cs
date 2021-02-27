@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class DoorController : MonoBehaviour {
     [SerializeField] private GameObject colliderObj;
+    [SerializeField] private GameObject[] objectsToActive;
 
     private GameController gameController;
     private bool open = false;
@@ -26,5 +27,9 @@ public class DoorController : MonoBehaviour {
     //Animation Event
     public void OpenDoor() {
         colliderObj.SetActive(false);
+
+        foreach (GameObject obj in objectsToActive) {
+            obj.SetActive(true);
+        }
     }
 }

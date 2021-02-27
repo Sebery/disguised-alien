@@ -12,6 +12,8 @@ public class EnemyController : MonoBehaviour {
     [SerializeField] private int damage;
     [SerializeField] private Timer attackTimer;
     [SerializeField] private Timer dieTimer;
+    [SerializeField] private GameObject[] items;
+    [SerializeField] private Transform itemsSpawn;
 
     private PlayerController playerController;
     private GameController gameController;
@@ -103,6 +105,12 @@ public class EnemyController : MonoBehaviour {
     }
 
     private void EnemyDie() {
+        //Spawn a random item
+        if (Random.Range(0, 2) == 1 && !gameController.MissionCompleted) {
+            GameObject obj = Instantiate(items[Random.Range(0, items.Length)]);
+            obj.transform.position = itemsSpawn.position;
+        }
+
         die = true;
         _animator.SetBool(DIE, true);
         _sortingGroup.sortingLayerName = "Die";

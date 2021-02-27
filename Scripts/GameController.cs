@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     [SerializeField] private GameObject mobileCanvas;
     [SerializeField] private Joystick moveJoystick;
     [SerializeField] private Joystick shootJoystick;
     [SerializeField] private int missionIndex;
+    [SerializeField] private Text timeText;
 
+    private float currentTime = 0.0f;
     private bool missionCompleted = false;
     private Manager manager;
     private bool gameOver = false;
@@ -25,5 +28,14 @@ public class GameController : MonoBehaviour {
 
         if (!manager.Mobile)
             mobileCanvas.SetActive(false);
+    }
+
+    private void Update() {
+        if (!gameOver) { 
+            currentTime += Time.deltaTime;
+            timeText.text = "Current Time: " + (int)currentTime + " s";
+        }
+
+        
     }
 }

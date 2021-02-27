@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform gunReference;
     [SerializeField] private Animator[] heartAnims;
     [SerializeField] private float colorDelay;
+    [SerializeField] private Text coinsText;
+    [SerializeField] private Text potionsText;
 
     private int currentHearts = 3;
     private int heartValue = 0;
@@ -33,6 +36,9 @@ public class PlayerController : MonoBehaviour {
     private int damage = 1;
     private Color damageColor = new Color(255, 0, 0, 50);
     private Color normalColor = new Color(255, 255, 255, 255);
+    private ActivatorController activatorController;
+    private int potions = 0;
+    private int coins = 0;
 
     //Animator Parameters
     private const string DIR_X = "DirX";
@@ -40,11 +46,28 @@ public class PlayerController : MonoBehaviour {
     private const string IS_MOVING = "IsMoving";
     private const string DIE = "Die";
     private const string HEART_STATE = "state";
+    private const string ANIMATION = "animation";
    
     public int SortingOrder { get => _spriteRenderer.sortingOrder; }
     public int CurrentGun { get => currentGun; set => currentGun = value; }
     public bool IsMovingUp { get => isMovingUp; }
     public int Damage { get => damage; set => damage = value; }
+    public int Potions { 
+        get => potions; 
+
+        set {
+            potions = value;
+            potionsText.text = "Potions: " + potions;
+        } 
+    }
+    public int Coins { 
+        get => coins;
+
+        set { 
+            coins = value;
+            coinsText.text = "Coins: " + coins;
+        } 
+    }
 
     public int Lives { 
         get => lives;
@@ -78,10 +101,18 @@ public class PlayerController : MonoBehaviour {
         _animator.SetFloat(DIR_Y, 0.0f);
         animDirection.x = 1.0f;
         animDirection.y = 0.0f;
+        activatorController = GameObject.FindGameObjectWithTag("Activator").GetComponent<ActivatorController>();
     }
 
     private void Update() {
-        if (die) return;
+        if (die || activatorController.AnimationStarted) {
+            _rigidbody2D.velocity = Vector2.zero;
+
+            if (activatorController.AnimationStarted)
+                _animator.SetBool(ANIMATION, true);
+
+            return;
+        }
 
         SelectDirection();
         SelectAnimation();
@@ -90,7 +121,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (die) return;
+        if (die || activatorController.AnimationStarted) return;
 
         _rigidbody2D.velocity = speed * Time.deltaTime * moveDirection;
     }
